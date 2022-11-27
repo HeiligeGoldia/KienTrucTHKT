@@ -4,6 +4,7 @@ import com.se.billing.entity.Billing;
 import com.se.billing.entity.Passenger;
 import com.se.billing.entity.ResponseTemplate;
 import com.se.billing.repository.BillingRepository;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -28,6 +29,7 @@ public class BillingController {
     RestTemplate restTemplate;
 
     @GetMapping("/getByBillId/{bid}")
+    @Retry(name = "bill")
     public ResponseTemplate getByBillId(@PathVariable("bid") int bid){
         ResponseTemplate re = new ResponseTemplate();
         Billing b = billingRepository.getById(bid);
